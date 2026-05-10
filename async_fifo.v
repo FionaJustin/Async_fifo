@@ -4,7 +4,7 @@ input wire                  wr_clk,
 input wire                  rd_clk, 
 input wire                  rst_n,
 input wire                  wr_enb,
-input wire[FIFO_WIDTH-1:0]  wr_dtata,
+input wire[FIFO_WIDTH-1:0]  wr_data,
 input wire                  rd_enb,
 output reg [FIFO_WIDTH-1:0] rd_data,
 output wire                 full,
@@ -29,7 +29,7 @@ always @(posedge wr_clk or negedge rst_n) begin
     end else begin
         if(wr_enb & !full) begin
             wr_addr<=wr_addr+{{FIFO_DEPTH{1'd0}},{1'd1}};
-            fifo_mem[wr_addr]<=wr_dtata;
+            fifo_mem[wr_addr]<=wr_data;
         end
     end
 end
