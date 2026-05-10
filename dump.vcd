@@ -1,0 +1,54 @@
+$date
+	Sat May 09 23:15:57 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module tb_b2g $end
+$var wire 8 ! out [7:0] $end
+$var reg 8 " in [7:0] $end
+$scope module conv $end
+$var wire 8 # in [7:0] $end
+$var wire 8 $ out [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 $
+b0 #
+b0 "
+b0 !
+$end
+#10
+b10000000 !
+b10000000 $
+b11111111 "
+b11111111 #
+#20
+b11111111 !
+b11111111 $
+b10101010 "
+b10101010 #
+#30
+b1111111 !
+b1111111 $
+b1010101 "
+b1010101 #
+#40
+b10101010 !
+b10101010 $
+b11001100 "
+b11001100 #
+#50
+b101010 !
+b101010 $
+b110011 "
+b110011 #
+#60

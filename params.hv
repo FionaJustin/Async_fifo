@@ -1,0 +1,4 @@
+parameter FIFO_WIDTH=8;
+parameter FIFO_DEPTH=64;
+parameter INPUT_WIDTH=8;
+parameter OUTPUT_WIDTH=8;
