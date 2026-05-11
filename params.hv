@@ -1,4 +1,9 @@
-parameter FIFO_WIDTH=8;
-parameter FIFO_DEPTH=64;
-parameter INPUT_WIDTH=8;
-parameter OUTPUT_WIDTH=8;
+`ifndef PARAMS_HV
+`define PARAMS_HV
+
+parameter FIFO_WIDTH = 8;
+parameter FIFO_DEPTH_WIDTH = 8;
+parameter INPUT_WIDTH = 8;
+parameter OUTPUT_WIDTH = 8;
+
+`endif

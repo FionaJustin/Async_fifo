@@ -1,13 +1,14 @@
-//`include "params.hv"
-
-module data_sync(
+module data_sync #(
+parameter ADDR_WIDTH = 4
+)(
 input wire clk, 
 input wire rst_n,
-input wire [FIFO_DEPTH:0] in,
-output reg [FIFO_DEPTH:0] out
+input wire [ADDR_WIDTH-1:0] in,
+output reg [ADDR_WIDTH-1:0] out
 );
-reg [FIFO_DEPTH:0] in_d1;
-reg [FIFO_DEPTH:0] in_d2;
+reg [ADDR_WIDTH-1:0] in_d1;
+reg [ADDR_WIDTH-1:0] in_d2;
+
 
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
