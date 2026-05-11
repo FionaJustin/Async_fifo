@@ -11,6 +11,7 @@ wire [FIFO_WIDTH-1:0] rd_data;
 wire full;
 wire empty;
 reg start_rd;
+reg full_seen;
 async_fifo fifo(
     .wr_clk         (wr_clk       ),
     .rd_clk         (rd_clk       ),
@@ -33,8 +34,11 @@ initial begin
     wr_enb = 1'b0;
     rd_enb = 1'b0;
     wr_data = {FIFO_WIDTH{1'd0}};
+    full_seen = 1'b0;
     #10 rst_n = 1'b1;
-    #50 start_rd = 1'b1;
+    wait(full == 1'b1);
+    $display("FIFO full asserted at time %0t", $time);
+    #100 start_rd = 1'b1;
     #100000 $finish;
 end
 
@@ -46,7 +50,7 @@ always @(posedge wr_clk or negedge rst_n) begin
         wr_enb <= 1'd0;
         wr_data <= {FIFO_WIDTH{1'd0}};
     end else begin
-        if(wr_data == 8'd255) begin
+        if(full || full_seen) begin
             wr_enb <= 1'd0;
         end else if(!full) begin
             wr_enb <= 1'd1;
@@ -60,6 +64,14 @@ always@(posedge rd_clk or negedge rst_n) begin
         rd_enb <= 1'd0;
     end else begin
         rd_enb <= start_rd & !empty;
+    end
+end
+
+always @(posedge wr_clk or negedge rst_n) begin
+    if(!rst_n) begin
+        full_seen <= 1'b0;
+    end else if(full && !full_seen) begin
+        full_seen <= 1'b1;
     end
 end
 endmodule

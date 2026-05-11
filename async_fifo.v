@@ -16,10 +16,10 @@ parameter FIFO_DEPTH = 1 << FIFO_DEPTH_WIDTH;
 reg [ADDR_WIDTH-1:0] wr_addr;
 reg [ADDR_WIDTH-1:0] rd_addr;
 reg [FIFO_WIDTH-1:0] fifo_mem [FIFO_DEPTH-1:0];
-wire [ADDR_WIDTH-1:0] g_wr_addr;
-wire [ADDR_WIDTH-1:0] g_rd_addr;
-wire [ADDR_WIDTH-1:0] sync_wr_addr;
-wire [ADDR_WIDTH-1:0] sync_rd_addr;
+wire [ADDR_WIDTH-1:0] wr_gray;
+wire [ADDR_WIDTH-1:0] rd_gray;
+wire [ADDR_WIDTH-1:0] sync_wr_gray;
+wire [ADDR_WIDTH-1:0] sync_rd_gray;
 wire [ADDR_WIDTH-1:0] nxt_rd_addr;
 wire [ADDR_WIDTH-1:0] nxt_wr_addr;
 
@@ -51,34 +51,33 @@ end
 b2g_conv  #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) conv1(
-    .in({nxt_wr_addr}),
-    .out({g_wr_addr})
+    .in(wr_addr),
+    .out(wr_gray)
     );
 b2g_conv  #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) conv2(
-    .in({nxt_rd_addr}),
-    .out({g_rd_addr})
+    .in(rd_addr),
+    .out(rd_gray)
     );
-
 data_sync  #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) sync1(
     .clk(wr_clk),
     .rst_n(rst_n),
-    .in({g_rd_addr}),
-    .out({sync_rd_addr})
+    .in(rd_gray),
+    .out(sync_rd_gray)
     );
 data_sync #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) sync2 (
     .clk(rd_clk),
     .rst_n(rst_n),
-    .in({g_wr_addr}),
-    .out({sync_wr_addr})
+    .in(wr_gray),
+    .out(sync_wr_gray)
     );
 
-assign full = (g_wr_addr == {~sync_rd_addr[ADDR_WIDTH-1:ADDR_WIDTH-2], sync_rd_addr[ADDR_WIDTH-3:0]});
-assign empty = (g_rd_addr == sync_wr_addr) ? 1'b1 : 1'b0;
+assign full = (wr_gray == {~sync_rd_gray[ADDR_WIDTH-1:ADDR_WIDTH-2], sync_rd_gray[ADDR_WIDTH-3:0]});
+assign empty = (rd_gray == sync_wr_gray) ? 1'b1 : 1'b0;
 
 endmodule
